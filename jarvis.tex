@@ -1,34 +1,247 @@
-<<<<<<< HEAD
 \section{Desarrollo de pruebas de penetración}
+
 \subsection{HTB01 - Jarvis}
+
     \subsubsection{Escaneo}
-        \large{Como inicio de la prueba de penetración se realiza un escaneo de puertos con la herramienta "Nmap", donde se encuentran dos puertos abiertos, el 22 con el servicio SSH y el 80 con un servidor web Apache.}
+
+        \large{Como primera etapa de la Prueba de Penetración realizamos un escaneo de puertos abiertos en la máquina víctima con la herramienta "Nmap", donde se encuentran dos de ellos, el 22 con el servicio SSH y el 80 con un servidor web Apache.}
         \par
-        \begin{figure}[h!]
-            \includegraphics[width=1\textwidth]{imagenes/nmap_jarvis.png} \par \vspace{0.1cm}
+        \begin{figure}[H]
+            \centering
+            \includegraphics[width=0.99\textwidth]{imagenes/jarvis/01_nmap_jarvis.png}
             \caption{Escaneo de puertos Jarvis} 
+        \end{figure}  
+
+    \subsubsection{Análisis de Vulnerabilidades}
+
+        \large{Al analizar el servicio web, se encontro una página web relacionada a un hotel.}
+        \par
+        \begin{figure}[H]
+            \centering
+            \includegraphics[width=0.99\textwidth]{imagenes/jarvis/02_index_jarvis.png}
+            \caption{Página Web Jarvis}
         \end{figure}
-    \subsubsection{Análisis de vulnerabilidades y debilidades}
+
+        \large{Lo siguiente a realizar fue usar la herramienta "Gobuster" para enumerar los directorios de la página web.}
+        \par
+        \begin{figure}[H]
+            \centering
+            \includegraphics[width=0.99\textwidth]{imagenes/jarvis/03_gobuster_jarvis.png}
+            \caption{Enumeración de directorios en Jarvis}
+        \end{figure}
         
-=======
-\section{Desarrollo de Pruebas de Penetración}
-\subsection{HTB01 - Jarvis}
-\subsubsection{Escaneo}
-Como primera etapa de la Prueba de Penetración realizamos un escaneo de los puertos abiertos por la máquina víctima, encontrando abierto el puerto 22 con el servicio SSH y el puerto 80 con un servicio Web.
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.99\textwidth]{imagenes/nmap_jarvis.png}
-    \caption{Escaneo de puertos en máquina Jarvis}
-\end{figure}
-\subsubsection{Análisis de Vulnerabilidades}
-Al analizar el servicio web, se encontro una página web relacionada a un hotel.
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.99\textwidth]{imagenes/index_jarvis.png}
-    \caption{Web Jarvis}
-\end{figure}
-\subsubsection{Explotación}
-\subsubsection{Escalamiento de Privilegios}
-\subsubsection{Post-Explotación}
-\subsubsection{Recomendaciones de Mitigación}
->>>>>>> f256170ae101aa73e4bc71b5936e56a5d6c15ea0
+        \large{Del paso anterior se registró 4 directorios, siendo los 3 primeros directorios comunes, se procedió a acceder al último "/phpmyadmin", donde se encontraba una Login al gestor de la base de datos de Jarvis.}
+        \par
+        \begin{figure}[H]
+            \centering
+            \includegraphics[width=0.99\textwidth]{imagenes/jarvis/04_phpmyadmin_jarvis.png}
+            \caption{Login a phpMyAdmin en Jarvis}
+        \end{figure}
+
+        \large{Al buscar información sobre la versión de este servicio, se encontró que tiene una vulnerabilidad de inclusión de archivos remotos (CVE-2018-12613), para la cual existe un exploit.}
+        \par
+        \begin{figure}[H]
+            \centering
+            \includegraphics[width=0.99\textwidth]{imagenes/jarvis/05_exploitdb_jarvis.png}
+            \caption{Exploit para phpMyAdmin 4.8.1 en Jarvis}
+        \end{figure}
+
+    \subsubsection{Explotación}
+
+        \large{Para poder explotar la vulnerabilidad con el exploit, se intento acceder al Login con las credenciales comunes, al o funcionar se continuo revisando la página web donde se encontró una sección de habitaciones.}
+        \par
+        \begin{figure}[H]
+            \centering
+            \includegraphics[width=0.99\textwidth]{imagenes/jarvis/06_seccion_rooms_jarvis.png}
+            \caption{Sección de habitaciones en Jarvis}
+        \end{figure}
+
+        \large{Al acceder a cada una de estas, se pudo observar que la dirección de la web cambió y que se proporcionaba un codigo por cada habitación.}
+        \par
+        \begin{figure}[H]
+            \centering
+            \includegraphics[width=0.99\textwidth]{imagenes/jarvis/07_room_jarvis.png}
+            \caption{Interfaz de una habitación en Jarvis}
+        \end{figure}
+
+        \large{Utilizamos esa nueva direción para aplicar la injección de sql con la herramienta "sqlmap".}
+        \par
+        \begin{figure}[H]
+            \centering
+            \includegraphics[width=0.99\textwidth]{imagenes/jarvis/08_sql_map_jarvis.png}
+            \caption{Ejecución de sqlmap en Jarvis}
+        \end{figure}
+
+        \large{Con el "sqlmap" logramos obtener el usuario (DBadmin) y la contraseña (imissyou) del Login.}
+        \par
+        \begin{figure}[H]
+            \centering
+            \includegraphics[width=0.99\textwidth]{imagenes/jarvis/09_db_pass_jarvis.png}
+            \caption{Credenciales del Login de phpMyAdmin en Jarvis}
+        \end{figure}
+
+        \large{Utilizamos las credenciales para acceder al Login.}
+        \par
+        \begin{figure}[H]
+            \centering
+            \includegraphics[width=0.99\textwidth]{imagenes/jarvis/10_phpmyadmin_dentro_jarvis.png}
+            \caption{Dentro de phpMyAdmin en Jarvis}
+        \end{figure}
+
+        \large{Con el acceso obtenido, se puede revisar la información del phpMyAdmin y se procedio a ejecutar el exploit, para ello primero se descargo y luego ejecutado, brindando la ip de la máquina atacante y el puerto de escucha.}
+        \par
+        \begin{figure}[H]
+            \centering
+            \includegraphics[width=0.99\textwidth]{imagenes/jarvis/11_exploit_phpmyadmin_jarvis.png}
+            \caption{Ejecución del Exploit en Jarvis}
+        \end{figure}
+
+        \large{Ya habiendo ejecutado el exploit, utilizamos reverse shell para tener control de la máquina objetivo, ya en la máquina ejecutamos el comando "whoami", el cual nos brinda el nombre de usuario asociado con la identificación de usuario efectiva actual de esta máquina, el cual es "www-data".}
+        \par
+        \begin{figure}[H]
+            \centering
+            \includegraphics[width=0.99\textwidth]{imagenes/jarvis/12_reverse_shell_jarvis.png}
+            \caption{Reverse shell en Jarvis}
+        \end{figure}
+
+        \large{Con el usuario www-data ejecutamos el comando "sudo -l" para obtener los permisos que posee, como se aprecia en la imagen de abajo}
+        \par
+        \begin{figure}[H]
+            \centering
+            \includegraphics[width=0.99\textwidth]{imagenes/jarvis/13_permiso_www_jarvis.png}
+            \caption{Permisos de "www-data" en Jarvis}
+        \end{figure}
+
+        \large{Se identificó que el nombre de usuario de la máquina es "pepper" y tiene acceso a un archivo python llamado "simpler.py", el cual ejecutamos, como de aprecia en la siguiente imagen.}
+        \par
+        \begin{figure}[H]
+            \centering
+            \includegraphics[width=0.99\textwidth]{imagenes/jarvis/14_simpler_python_jarvis.png}
+            \caption{Ejecución de "Simpler.py" en Jarvis}
+        \end{figure}
+
+        \large{En el código python ejecutado se encuentra la función que se aprecia en la imagen de abajo, la cual nos dice que mientras no se usen los carácteres listados no terminará la ejecucuón del código.}
+        \par
+        \begin{figure}[H]
+            \centering
+            \includegraphics[width=0.99\textwidth]{imagenes/jarvis/15_fun_ping_jarvis.png}
+            \caption{Función de Simpler.py en Jarvis}
+        \end{figure}
+
+        \large{Probamos ejecutar el comando bash con el carácter especial de dolár, pues no se encuentra en la lista mencionada previamente.}
+        \par
+        \begin{figure}[H]
+            \centering
+            \includegraphics[width=0.99\textwidth]{imagenes/jarvis/16_prueba_bash_jarvis.png}
+            \caption{Prueba del comando "bash" en Jarvis}
+        \end{figure}
+
+        \large{Ahora, con la información obtenida por el bash aplicamos reverse shell al usuario "peppers".}
+        \par
+        \begin{figure}[H]
+            \centering
+            \includegraphics[width=0.99\textwidth]{imagenes/jarvis/17_reverse_peppers_jarvis.png}
+            \caption{Aplicación de Reverse shell a "peppers" en Jarvis}
+        \end{figure}
+
+        \large{Abrimos el puerto de escucha en la máquina atacante y verificamos que estemos con el usuario correcto.}
+        \par
+        \begin{figure}[H]
+            \centering
+            \includegraphics[width=0.99\textwidth]{imagenes/jarvis/18_conect_peppers_jarvis.png}
+            \caption{Conexión a "peppers" en Jarvis}
+        \end{figure}
+
+        \large{Ya con el usuario "peppers" revisando los archivos que contiene, encontramos un user.text donde se ubica la flag del usuario.}
+        \par
+        \begin{figure}[H]
+            \centering
+            \includegraphics[width=0.99\textwidth]{imagenes/jarvis/19_user_flag_jarvis.jpg}
+            \caption{User flag de Jarvis}
+        \end{figure}
+
+    \subsubsection{Escalamiento de Privilegios}
+
+        \large{Ahora tratamos de escalar privilegios en la máquina, para ello listamos los archivos binarios con permiso SUID, como se aprecia en la siguiente imagen.}
+        \par
+        \begin{figure}[H]
+            \centering
+            \includegraphics[width=0.99\textwidth]{imagenes/jarvis/20_binarios_suid_jarvis.png}
+            \caption{Archivos binarios en Jarvis}
+        \end{figure}
+
+        \large{Con los archivos listados, buscamos el que proporcione la información de los accesos de root de la página, de acuerdo a la siguiente documentación encontrada.}
+        \par
+        \begin{figure}[H]
+            \centering
+            \includegraphics[width=0.99\textwidth]{imagenes/jarvis/21_systemctl.png}
+            \caption{Systemctl}
+        \end{figure}
+
+        \large{Utilizamos el servicio reverse de la siguiente manera.}
+        \par
+        \begin{figure}[H]
+            \centering
+            \includegraphics[width=0.99\textwidth]{imagenes/jarvis/22_servicio_reverse_jarvis.png}
+            \caption{Servicio reverse en Jarvis}
+        \end{figure}
+
+        \large{Procedemos a descagar el reverse.}
+        \par
+        \begin{figure}[H]
+            \centering
+            \includegraphics[width=0.99\textwidth]{imagenes/jarvis/23_descarga_reverse_jarvis.png}
+            \caption{Servicio reverse en Jarvis}
+        \end{figure}
+
+        \large{Y ahora lo ejecutamos.}
+        \par
+        \begin{figure}[H]
+            \centering
+            \includegraphics[width=0.99\textwidth]{imagenes/jarvis/24_ejecu_servicio.png}
+            \caption{Servicio reverse en Jarvis}
+        \end{figure}
+
+        \large{Establecemos el puerto de escucha y se puede verificar que se consiguió el acceso a root.}
+        \par
+        \begin{figure}[H]
+            \centering
+            \includegraphics[width=0.99\textwidth]{imagenes/jarvis/25_conect_root_jarvis.png}
+            \caption{Conexión a root en Jarvis}
+        \end{figure}
+
+        \large{Revisando los archivos del usuario root, encontramos el archivo "root.txt" con su respectiva flag.}
+        \par
+        \begin{figure}[H]
+            \centering
+            \includegraphics[width=0.99\textwidth]{imagenes/jarvis/26_root_flag_jarvis.jpg}
+            \caption{Root flag en Jarvis}
+        \end{figure}
+
+    \subsubsection{Post-Explotación}
+
+        \large{Se crea una carpeta ".ssh" para almacenar la llave pública de Jarvis.}
+        \par
+        \begin{figure}[H]
+            \centering
+            \includegraphics[width=0.99\textwidth]{imagenes/jarvis/27_public_key_jarvis.png}
+            \caption{Carpeta ".ssh" y llave pública en Jarvis}
+        \end{figure}
+
+        \large{Especificamos las claves para el ssh como se muestra abajo.}
+        \par
+        \begin{figure}[H]
+            \centering
+            \includegraphics[width=0.99\textwidth]{imagenes/jarvis/28_ssh_root_jarvis.png}
+            \caption{Claves root en Jarvis}
+        \end{figure}
+
+        \large{Para terminar esta fase, se procede a extraer ña credenciales de los usuarios de la máquina Jarvis.}
+        \par
+        \begin{figure}[H]
+            \centering
+            \includegraphics[width=0.99\textwidth]{imagenes/jarvis/29_hashes_jarvis.png}
+            \caption{Extracción de contraseñas en formato hash de Jarvis}
+        \end{figure}
+
+    \subsubsection{Recomendaciones de Mitigación}
