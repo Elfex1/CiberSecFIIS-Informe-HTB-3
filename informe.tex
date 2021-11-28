@@ -69,6 +69,20 @@
     \section{Detalle de Hallazgos}
         \large{Los hallazgos encontrados en la evaluación de penetración de seguridad fueron los siguientes:}
         \par
+        \large{Se encontraron 4 vulnerabilidades entre las 3 máquinas.}
+        \par
+        \begin{table}[H]
+            \centering
+                \begin{tabular}{c|c|c|c|c|c|c|}\hline
+                    Identificador & CVE & Tipo de vulnerabilidad & CVSSv2 & Jarvis & Time & Forest \\ \hline
+                    VU01 & - & Inyección SQL & & • & &  \\ \hline
+                    VU02 & CVE-2018-12613 & Ejecución remota de código & 8.8 & • & &  \\ \hline
+                    VU03 & CVE-2019-12384 & Ejecución remota de código & 3.0 & & • &  \\ \hline
+                    VU04 & - & Asignación de permisos & & & & • \\ \hline
+                \end{tabular}
+                \caption{Vulnerabilidades encontradas}
+        \end{table}
+        \par
         \vspace{0.1cm}
 
 %------Pruebas de penetracion----------
