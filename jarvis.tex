@@ -46,8 +46,6 @@
             \caption{Exploit para phpMyAdmin 4.8.1 en Jarvis}
         \end{figure}
 
-    \subsubsection{Explotación}
-
         \large{Para poder explotar la vulnerabilidad con el exploit, se intento acceder al Login con las credenciales comunes, al o funcionar se continuo revisando la página web donde se encontró una sección de habitaciones.}
         \par
         \begin{figure}[H]
@@ -80,6 +78,8 @@
             \caption{Credenciales del Login de phpMyAdmin en Jarvis}
         \end{figure}
 
+    \subsubsection{Explotación}
+
         \large{Utilizamos las credenciales para acceder al Login.}
         \par
         \begin{figure}[H]
@@ -103,6 +103,8 @@
             \includegraphics[width=0.99\textwidth]{imagenes/jarvis/12_reverse_shell_jarvis.png}
             \caption{Reverse shell en Jarvis}
         \end{figure}
+
+    \subsubsection{Escalamiento de Privilegios}
 
         \large{Con el usuario www-data ejecutamos el comando "sudo -l" para obtener los permisos que posee, como se aprecia en la imagen de abajo}
         \par
@@ -159,8 +161,6 @@
             \includegraphics[width=0.99\textwidth]{imagenes/jarvis/19_user_flag_jarvis.jpg}
             \caption{User flag de Jarvis}
         \end{figure}
-
-    \subsubsection{Escalamiento de Privilegios}
 
         \large{Ahora tratamos de escalar privilegios en la máquina, para ello listamos los archivos binarios con permiso SUID, como se aprecia en la siguiente imagen.}
         \par
