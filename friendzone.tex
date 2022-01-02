@@ -130,6 +130,54 @@
         \caption{Dominio friendzone agregado al archivo /etc/hosts} 
     \end{figure}
     \subsubsection{Escalamiento de Privilegios}
+        \large{Ya dentro de la maquina buscamos acceder a las carpetas a la que el usuario tiene acceso.}
+        \par
+        \begin{figure}[H]
+            \centering
+            \includegraphics[width=0.99\textwidth]{informe4/imagenes/friendzone/20_enum_varwww.png}
+            \caption{Enum varwww en Friendzone} 
+        \end{figure}
+
+        \large{Leemos el contenido del archivo 'mysql data.conf'.}
+        \par
+        \begin{figure}[H]
+            \centering
+            \includegraphics[width=0.99\textwidth]{informe4/imagenes/friendzone/21_password_friend.png}
+            \caption{Archivo mysql data.conf en Friendzone} 
+        \end{figure}
+
+        \large{Nos conectamos con los nuevos accesos obtenidos de 'mysql data.conf'.}
+        \par
+        \begin{figure}[H]
+            \centering
+            \includegraphics[width=0.99\textwidth]{informe4/imagenes/friendzone/22_conexionfriend.png}
+            \caption{conexion en Friendzone} 
+        \end{figure}
+
+        \large{Nos ubicamos en la maquina y encontramos la flag.}
+        \par
+        \begin{figure}[H]
+            \centering
+            \includegraphics[width=0.99\textwidth]{informe4/imagenes/friendzone/23_1_flag_user.png}
+            \caption{Flag user en Friendzone} 
+        \end{figure}
+
+        \large{Con la herramienta 'wget' subimos el 'linpeas.sh'.}
+        \par
+        \begin{figure}[H]
+            \centering
+            \includegraphics[width=0.99\textwidth]{informe4/imagenes/friendzone/23_2_uploadlinpeas.png}
+            \caption{Upload linpeas en Friendzone} 
+        \end{figure}
+
+        \large{Buscamos credenciales en 'linpeas.sh'.}
+        \par
+        \begin{figure}[H]
+            \centering
+            \includegraphics[width=0.99\textwidth]{informe4/imagenes/friendzone/24_linpeas.png}
+            \caption{Linpeas en Friendzone} 
+        \end{figure}
+
 
     \subsubsection{Post-Explotación}
 
