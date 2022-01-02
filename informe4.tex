@@ -1,0 +1,89 @@
+\documentclass[a4paper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage[margin=2cm, top=2cm, includefoot]{geometry}%--para definir espacio de márgenes
+\usepackage{graphicx}%--para insertar imágenes
+\usepackage{fancyhdr}%--para el estilo con barra arriba de las páginas
+\usepackage[table,xcdraw]{xcolor}%--para la detección de colores
+\usepackage[hidelinks]{hyperref}%--para hipervínculos
+\usepackage{parskip}%--para evitar tabulación de inicio de párrafo
+\usepackage{booktabs}%--
+\usepackage{multirow, array}
+\usepackage{ragged2e}
+\usepackage{float}
+
+%definiendo color
+\definecolor{rojoOscuro}{HTML}{A20303}
+%---definiendo estilo del informe
+\setlength{\headheight}{56.10185pt}
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{\hspace{0.1cm} \includegraphics[height=1.55cm]{../imagenes/CiberSecFIIS.png}}\rhead{\includegraphics[height=1.5cm]{../imagenes/uni_logo.png} \hspace{0.1cm}}
+
+%---Cambios
+\renewcommand{\headrulewidth}{3pt}%--grosor de la linea superior
+\renewcommand{\headrule}{\hbox to\headwidth{\color{rojoOscuro}\leaders\hrule height \headrulewidth\hfill}}%--definir la linea base superior
+\renewcommand{\arraystretch}{2}%--espaciado de las tablas
+%---Inicio de informe
+
+\begin{document}
+    \include{caratula.tex}
+%-----------------------------------------------------------
+    \clearpage
+        \tableofcontents
+    \clearpage
+%------------------------------------------------------------
+    \listoffigures
+    \clearpage
+%------------------------------------------------
+    %----Para el inicio de numeración a partir de aquí---
+    \cfoot{\thepage}
+    \setcounter{page}{1}
+ %--------Resumen ejecutivo------------
+    \addcontentsline{toc}{section}{Resumen Ejecutivo} %--Para que sección sin numeración aparezca en el índice
+    \begin{center}
+        \section*{Resumen Ejecutivo}
+    \end{center}
+    \vspace{0.1cm}
+
+%-------------------------------------------------
+    \clearpage
+    \section{Objetivo}
+        \large{El objetivo de la presente evaluación de penetración de seguridad es encontrar vulnerabilidades y hacer una evaluación de criticidad de estas con el fin de que el negocio no se vea afectado por algún ataque malicioso que pueda afectar la calidad de sus servicios y su imagen.}
+        \par
+    \section{Alcance}
+        \large{El alcance de esta evaluación se limita a las pruebas en los computadores de la plataforma Hack The Box con las siguientes direcciones IP:}
+        \par
+        \begin{table}[h]
+            \centering
+                \begin{tabular}{|c|c|c|c|c|} \hline
+                    Identificador & Nombre de host & Dirección IP & Sistema Operativo & Dificultad \\ \hline
+                    
+                \end{tabular}
+                \caption{Datos sobre las máquinas}
+        \end{table}
+        \par
+    \section{Detalle de Hallazgos}
+        \large{Los hallazgos encontrados en la evaluación de penetración de seguridad fueron los siguientes:}
+        \par
+        \large{Se encontraron 4 vulnerabilidades entre las 3 máquinas.}
+        \par
+        \begin{table}[H]
+            \centering
+                \begin{tabular}{|c|c|c|c|c|c|c|}\hline
+                    Identificador & CVE & Tipo de vulnerabilidad & CVSSv2 & Jarvis & Time & Forest \\ \hline
+                    
+                \end{tabular}
+                \caption{Vulnerabilidades encontradas}
+        \end{table}
+        \par
+        
+
+%------Pruebas de penetracion----------
+    \clearpage
+    \include{friendzone.tex}
+    
+    \clearpage
+%------Conclusiones-----------
+\end{document}
